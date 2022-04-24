@@ -127,3 +127,30 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# IDEA
+.idea
+
+# Project specific files to ignore
+saved/micron
+saved/dualnn
+saved/simnn
+saved/gamenet
+saved/leap
+saved/retain
+results/micron
+results/dualnn
+results/simnn
+results/gamenet
+results/leap
+results/retain
+data/DIAGNOSES_ICD.csv
+data/PRESCRIPTIONS.csv
+data/PROCEDURES_ICD.csv
+data/drug-DDI.csv
+data/data_final.pkl
+data/ddi_A_final.pkl
+data/ehr_adj_final.pkl
+data/idx2drug.pkl
+data/records_final.pkl
+data/voc_final.pkl
