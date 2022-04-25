@@ -141,7 +141,7 @@ def eval(model, data_eval, voc_size, epoch, val=0, threshold1=0.8, threshold2=0.
 
 
 def main():
-    device = torch.device('cuda')
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # Load data
     ddi_adj = dill.load(open(ddi_adj_path, 'rb'))

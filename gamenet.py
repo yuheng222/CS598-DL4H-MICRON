@@ -144,7 +144,7 @@ def eval(model, data_eval, voc_size, epoch):
 
 
 def main():
-    device = torch.device('cuda')
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # Load data
     ehr_adj = dill.load(open(ehr_adj_path, 'rb'))
