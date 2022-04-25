@@ -151,6 +151,5 @@ data/drug-DDI.csv
 data/data_final.pkl
 data/ddi_A_final.pkl
 data/ehr_adj_final.pkl
-data/idx2drug.pkl
 data/records_final.pkl
 data/voc_final.pkl

@@ -2,19 +2,17 @@
 
 ## Overview
  
-This repository contains the code which we used for our reproducibility study project as part of the CS598 - Deep
-Learning for healthcare course at the University of Illinois Urbana-Champaign. The project aims to replicate the
+This repository contains code which we used for our reproducibility study project as part of the CS598 - Deep
+Learning for Healthcare course at University of Illinois Urbana-Champaign. Our project aims to replicate the
 experiments and verify the claims and evaluation results that were presented in the [Change Matters: Medication Change
 Prediction with Recurrent Residual Networks (MICRON) paper](https://arxiv.org/abs/2105.01876). 
 
-Our code was largely referenced from the [MICRON repository](https://github.com/ycq091044/MICRON). We refactored the 
-code, made some modifications to its structure and added more documentation to make it easier to install and use. 
-
-The medication code mapping files used in data preprocessing were obtained from the 
-[GAMENet repository](https://github.com/sjy1203/GAMENet/tree/master/data).
+We referenced most of our code from the [MICRON repository](https://github.com/ycq091044/MICRON). We did some refactoring
+on their code, made some modifications to its structure and added more documentation to make it easier for users 
+to install and run the code.
 
 ## System Requirements
-If you are running a fresh Ubuntu VM, the easiest way run this code base to use 
+If you are running a fresh Ubuntu VM, the easiest way to run this code base is to use 
 [Lambda Stack](https://lambdalabs.com/lambda-stack-deep-learning-software). It will install all the required data 
 science libraries and packages for you automatically in a single command. We have tested that our code runs successfully 
 with Lambda Stack.
@@ -23,7 +21,7 @@ Our code also runs successfully on a machine with the below specifications.
 
 System:
 - Ubuntu 20.04.4 LTS
-- Python 3.8.10 & pip
+- Python 3.8.10
 - CUDA 11.6
 
 Python packages:
@@ -33,9 +31,9 @@ Python packages:
 - scikit-learn==0.22.2.post1
 - torch==1.10.1
 
-This code may or may not run successfully on any other versions of Ubuntu, CUDA, CUDNN and Python etc. as we have not
+This code may or may not run successfully on any other versions of Ubuntu, Python and CUDA as we have not
 tested the code on other environments. If you are using other versions, please leave a comment in the issues section and 
-let us know if you are able/not able to run the code.
+let us know if you are able or not able to run the code.
 
 ## Folder Structure
 
@@ -49,6 +47,7 @@ let us know if you are able/not able to run the code.
  ┃ ┣ 📜PROCEDURES_ICD.csv
  ┃ ┣ 📜drug-DDI.csv
  ┃ ┣ 📜drug-atc.csv
+ ┃ ┣ 📜idx2drug.pkl
  ┃ ┣ 📜ndc2atc_level4.csv
  ┃ ┗ 📜ndc2rxnorm_mapping.txt
  ┣ 📂models
@@ -78,40 +77,39 @@ The required data files in the */data* folder can be obtained from the following
 - MIMIC-III dataset from [PhysioNet](https://physionet.org/content/mimiciii/1.4/) 
 (DIAGNOSES_ICD.csv, PRESCRIPTIONS.csv, PROCEDURES_ICD.csv)
 - Medical code mappings from [GAMENet repository](https://github.com/sjy1203/GAMENet/tree/master/data)
-(drug-atc.csv, ndc2atc_level4.csv, ndc2rxnorm_mapping.txt)
+(drug-atc.csv, ndc2atc_level4.csv, ndc2rxnorm_mapping.txt, idx2drug.pkl)
 - Drug DDI information from [CID](https://drive.google.com/file/d/1mnPc0O0ztz0fkv3HF-dpmBb8PLWsEoDz/view) (drug-DDI.csv)
 
 ## Installation
-1. Install [Python 3.8 & pip](https://www.python.org/downloads) if it's not already installed.
+1. Install [Python 3.8](https://www.python.org/downloads) if it's not already installed.
 2. If you are using GPU for training/testing, please ensure that compatible versions of 
 [cuDNN](https://developer.nvidia.com/cudnn) and [CUDA](https://developer.nvidia.com/cuda-downloads) are installed.
 3. Install the required Python packages using pip.
 ```
 pip install -r requirements.txt
 ```
-4. Ensure that all relevant data and mapping files mentioned in the in the folder structure section are present in the 
-*data/* folder and run the preprocessing file *utils/preprocessing.py*.
+4. Ensure that all data and mapping files shown in the folder structure section are present in the *data/* folder and 
+run the preprocessing file *utils/preprocessing.py*.
 ```
 python preprocessing.py
 ```
-5. Verify that the configurations in *config/config.ini* are correct before running the model functions for 
-training/testing.
+5. Verify that the configurations in *config/config.ini* are correct before running the models for training/testing.
 
 ## Training
-To train a model, simply run the model function (e.g. micron.py, gamenet.py) in the root folder.
+To train a model, simply run the model's main function (e.g. micron.py, gamenet.py) located in the root folder.
 ```
 python micron.py
 ```
-Each model function has its own set of input arguments as well. To get the full list of input arguments and their 
-usages, use the *--help* argument.
+Every model has its own set of input arguments. To get the full list of input arguments and their usages, use the 
+*--help* argument.
 ```
 python micron.py --help
 ```
 The training results will be stored in the *results/* folder and the trained weights will be stored in the *saved/* 
-folder respectively for each model under their own subfolders.
+folder respectively.
 
-If you wish to train the models all at once, you can run *run_all.sh*. Make sure that the current user has read and 
-execute permissions for this shell script.
+If you wish to train all models at once, you can run *run_all.sh*. Make sure that the current user has read and execute 
+permissions for this shell script.
 ```
 chmod u+r+x run_all.sh
 ./run_all.sh
@@ -123,7 +121,7 @@ model that you want to test under the *resume_path* variable in *config/config.i
 ```
 resume_path=saved/micron/Epoch_39_JA_0.5227_DDI_0.07215.model
 ```
-Then, run the model function in test mode using the *--test* input argument.
+Then, run the model's main function in test mode using the *--test* input argument.
 ```
 python micron.py --test
 ```
@@ -133,8 +131,8 @@ python micron.py --test
 ![Evaluation Results](https://github.com/yuheng222/CS598-DL4H-MICRON/blob/main/results/images/evaluation_result.png?raw=true)
 
 Our evaluation results are very close to what was presented in the paper. From our experiments, MICRON had a 2.9% 
-relative improvement in F1-score over the best baseline model compared to the 3.5% relative improvement mentioned in the
-paper.
+relative improvement in F1-score over the best baseline model (GAMENet) as compared to the 3.5% relative improvement 
+mentioned in the paper.
 
 ## Citation
 ```
