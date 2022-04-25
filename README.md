@@ -12,7 +12,7 @@ on their code, made some modifications to its structure and added more documenta
 to install and run the code.
 
 ## System Requirements
-If you are running a fresh Ubuntu VM, the easiest way to run this code base is to use 
+If you are using a fresh Ubuntu VM, the easiest way to run this code base is to use 
 [Lambda Stack](https://lambdalabs.com/lambda-stack-deep-learning-software). It will install all the required data 
 science libraries and packages for you automatically in a single command. We have tested that our code runs successfully 
 with Lambda Stack.
