@@ -7,9 +7,9 @@ Learning for Healthcare course at University of Illinois Urbana-Champaign. Our p
 experiments and verify the claims and evaluation results that were presented in the [Change Matters: Medication Change
 Prediction with Recurrent Residual Networks (MICRON) paper](https://arxiv.org/abs/2105.01876). 
 
-We referenced most of our code from the [MICRON repository](https://github.com/ycq091044/MICRON). We did some refactoring
-on their code, made some modifications to its structure and added more documentation to make it easier for users 
-to install and run the code.
+Most of our code was referenced from the [MICRON repository](https://github.com/ycq091044/MICRON). We did some 
+refactoring, made some modifications to the structure and added more documentation to make it easier for users to 
+install and run the code.
 
 ## System Requirements
 If you are using a fresh Ubuntu VM, the easiest way to run this code base is to use 
@@ -72,13 +72,32 @@ let us know if you are able or not able to run the code.
  ┣ 📜run_all.sh
  ┗ 📜simnn.py
 ```
+Brief descriptions of the various files and folders are as follows:
 
-The required data files in the */data* folder can be obtained from the following links:
+#### CS598-DL4H-MICRON/ (root)
+This is the root folder which contains the main functions of the MICRON model and the baseline models. The main 
+functions are named after their models (e.g. *micron.py*, *gamenet.py*). It also contains the project dependencies file
+(*requirements.txt*) and a bash script (*run_all.sh*) used to train all models at once.
+
+#### config/
+The config folder contains a configuration file (*config.ini*) that can be used to change some settings such as data 
+file path, number of epochs and the test mode checkpoint path (*resume_path*).  
+
+#### data/ 
+The data folder should contain all the raw input data and mapping files. These files can be obtained from the following 
+links:
 - MIMIC-III dataset from [PhysioNet](https://physionet.org/content/mimiciii/1.4/) 
 (DIAGNOSES_ICD.csv, PRESCRIPTIONS.csv, PROCEDURES_ICD.csv)
 - Medical code mappings from [GAMENet repository](https://github.com/sjy1203/GAMENet/tree/master/data)
 (drug-atc.csv, ndc2atc_level4.csv, ndc2rxnorm_mapping.txt, idx2drug.pkl)
 - Drug DDI information from [CID](https://drive.google.com/file/d/1mnPc0O0ztz0fkv3HF-dpmBb8PLWsEoDz/view) (drug-DDI.csv)
+
+#### models/
+The models folder contains all the model architecture files of MICRON and the baseline models.
+
+#### utils/
+The utils folder contains the data preprocessing file (*preprocessing.py*) which is used to preprocess raw data. It also 
+contains an utilities file (*util.py*) that consists of helper functions such as data transformers and metrics printers.
 
 ## Installation
 1. Install [Python 3.8](https://www.python.org/downloads) if it's not already installed.
@@ -88,15 +107,15 @@ The required data files in the */data* folder can be obtained from the following
 ```
 pip install -r requirements.txt
 ```
-4. Ensure that all data and mapping files shown in the folder structure section are present in the *data/* folder and 
-run the preprocessing file *utils/preprocessing.py*.
+4. Ensure that all data and mapping files previously described in the folder structure section are present in the 
+*data/* folder, and run the preprocessing file *utils/preprocessing.py*.
 ```
 python preprocessing.py
 ```
 5. Verify that the configurations in *config/config.ini* are correct before running the models for training/testing.
 
 ## Training
-To train a model, simply run the model's main function (e.g. micron.py, gamenet.py) located in the root folder.
+To train a model, simply run the model's main function located in the root folder.
 ```
 python micron.py
 ```
