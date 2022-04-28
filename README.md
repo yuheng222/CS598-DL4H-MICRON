@@ -32,7 +32,7 @@ Python packages:
 - torch==1.10.1
 
 This code may or may not run successfully on any other versions of Ubuntu, Python and CUDA as we have not
-tested the code on other environments. If you are using other versions, please leave a comment in the issues section and 
+tested it on other environments. If you are using other versions, please leave a comment in the issues section and 
 let us know if you are able or not able to run the code.
 
 ## Folder Structure
@@ -154,6 +154,7 @@ relative improvement in F1-score over the best baseline model (GAMENet) as compa
 mentioned in the paper.
 
 ## Citation
+#### Paper
 ```
 @inproceedings{yang2021micron,
     title = {Change Matters: Medication Change Prediction with Recurrent Residual Networks},
@@ -163,5 +164,8 @@ mentioned in the paper.
     year = {2021}
 }
 ```
+#### Code
+[MICRON repository](https://github.com/ycq091044/MICRON)
+
 
 
