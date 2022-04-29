@@ -7,7 +7,7 @@ Learning for Healthcare course at University of Illinois Urbana-Champaign. Our p
 experiments and verify the claims and evaluation results that were presented in the [Change Matters: Medication Change
 Prediction with Recurrent Residual Networks (MICRON) paper](https://arxiv.org/abs/2105.01876). 
 
-Most of our code was referenced from the [MICRON repository](https://github.com/ycq091044/MICRON). We did some 
+Most of our code was referenced from the [MICRON repository](https://github.com/ycq091044/MICRON) by Chaoqi, Yang. We did some 
 refactoring, made some modifications to the structure and added more documentation to make it easier for users to 
 install and run the code.
 
@@ -165,7 +165,7 @@ mentioned in the paper.
 }
 ```
 #### Code
-[MICRON repository](https://github.com/ycq091044/MICRON)
+[MICRON repository](https://github.com/ycq091044/MICRON) by Chaoqi, Yang
 
 
 
