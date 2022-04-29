@@ -151,7 +151,9 @@ Our evaluation results are very close to what was presented in the paper. From o
 relative improvement in F1-score over the best baseline model (GAMENet) as compared to the 3.5% relative improvement 
 mentioned in the paper.
 
-![Computational Results](https://github.com/yuheng222/CS598-DL4H-MICRON/blob/main/results/images/computational_results.png?raw=true)
+<p align="center">
+    <img width="45%" src="https://github.com/yuheng222/CS598-DL4H-MICRON/blob/main/results/images/computational_results.png?raw=true" alt="Computational Results"> 
+</p>
 
 As for computational speed, MICRON managed to achieve a 1.36 times speedup over GAMENet from our experiments as compared
 to the 1.5 times relative speedup mentioned in the paper. 
