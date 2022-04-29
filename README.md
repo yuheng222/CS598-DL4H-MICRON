@@ -107,6 +107,7 @@ pip install -r requirements.txt
 4. Ensure that all data and mapping files previously described in the folder structure section are present in the 
 *data/* folder, and run the preprocessing file *utils/preprocessing.py*.
 ```
+cd utils
 python preprocessing.py
 ```
 5. Verify that the configurations in *config/config.ini* are correct before running the models for training/testing.
