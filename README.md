@@ -55,9 +55,6 @@ let us know if you are able or not able to run the code.
  ┃ ┣ 📜layers.py
  ┃ ┗ 📜models.py
  ┣ 📂utils
- ┃ ┣ 📂__pycache__
- ┃ ┃ ┣ 📜__init__.cpython-38.pyc
- ┃ ┃ ┗ 📜util.cpython-38.pyc
  ┃ ┣ 📜__init__.py
  ┃ ┣ 📜preprocessing.py
  ┃ ┗ 📜util.py
