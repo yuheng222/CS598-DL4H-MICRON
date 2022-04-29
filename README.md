@@ -7,9 +7,9 @@ Learning for Healthcare course at University of Illinois Urbana-Champaign. Our p
 experiments and verify the claims and evaluation results that were presented in the [Change Matters: Medication Change
 Prediction with Recurrent Residual Networks (MICRON) paper](https://arxiv.org/abs/2105.01876). 
 
-Most of our code was referenced from the [MICRON repository](https://github.com/ycq091044/MICRON) by Chaoqi, Yang. We did some 
-refactoring, made some modifications to the structure and added more documentation to make it easier for users to 
-install and run the code.
+Most of our code was referenced from the [MICRON repository](https://github.com/ycq091044/MICRON) by 
+[Chaoqi, Yang](https://github.com/ycq091044). We did some refactoring, made some modifications to the structure and 
+added more documentation to make it easier for users to install and run the code.
 
 ## System Requirements
 If you are using a fresh Ubuntu VM, the easiest way to run this code base is to use 
@@ -153,6 +153,11 @@ Our evaluation results are very close to what was presented in the paper. From o
 relative improvement in F1-score over the best baseline model (GAMENet) as compared to the 3.5% relative improvement 
 mentioned in the paper.
 
+![Computational Results](https://github.com/yuheng222/CS598-DL4H-MICRON/blob/main/results/images/computational_results.png?raw=true)
+
+As for computational speed, MICRON managed to achieve a 1.36 times speedup over GAMENet from our experiments as compared
+to the 1.5 times relative speedup mentioned in the paper. 
+
 ## Citation
 #### Paper
 ```
@@ -165,7 +170,8 @@ mentioned in the paper.
 }
 ```
 #### Code
-[MICRON repository](https://github.com/ycq091044/MICRON) by Chaoqi, Yang
+[MICRON repository](https://github.com/ycq091044/MICRON) by 
+[Chaoqi, Yang](https://github.com/ycq091044)
 
 
 
