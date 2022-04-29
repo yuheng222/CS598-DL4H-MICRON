@@ -318,9 +318,9 @@ if __name__ == '__main__':
     med_structure_file = '../data/idx2drug.pkl'
 
     # Drug code mapping files
-    ndc2atc_file = '../data/ndc2atc_level4.csv'
+    ndc2atc_file = '../data/RXCUI2atc4.csv'
     cid_atc = '../data/drug-atc.csv'
-    ndc_rxnorm_file = '../data/ndc2rxnorm_mapping.txt'
+    ndc_rxnorm_file = '../data/rxnorm2RXCUI.txt'
 
     # DDI information
     ddi_file = '../data/drug-DDI.csv'

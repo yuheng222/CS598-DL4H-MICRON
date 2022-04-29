@@ -48,8 +48,8 @@ let us know if you are able or not able to run the code.
  ┃ ┣ 📜drug-DDI.csv
  ┃ ┣ 📜drug-atc.csv
  ┃ ┣ 📜idx2drug.pkl
- ┃ ┣ 📜ndc2atc_level4.csv
- ┃ ┗ 📜ndc2rxnorm_mapping.txt
+ ┃ ┣ 📜RXCUI2atc4.csv
+ ┃ ┗ 📜rxnorm2RXCUI.txt
  ┣ 📂models
  ┃ ┣ 📜__init__.py
  ┃ ┣ 📜layers.py
@@ -88,6 +88,11 @@ links:
 - Medical code mappings from [GAMENet repository](https://github.com/sjy1203/GAMENet/tree/master/data)
 (drug-atc.csv, ndc2atc_level4.csv, ndc2rxnorm_mapping.txt, idx2drug.pkl)
 - Drug DDI information from [CID](https://drive.google.com/file/d/1mnPc0O0ztz0fkv3HF-dpmBb8PLWsEoDz/view) (drug-DDI.csv)
+
+The NDC-RXCUI-ATC4 mapping file has been renamed from *ndc2atc_level4.csv* to *RXCUI2atc4.csv* and the rxnorm to RXCUI 
+mapping file has been renamed from *ndc2rxnorm_mapping.txt* to *rxnorm2RXCUI.txt* in our code. For more detailed 
+descriptions of the data files, you can refer to the Folder Specification section in the README of the 
+[MICRON repository](https://github.com/ycq091044/MICRON).
 
 #### models/
 The models folder contains all the model architecture files of MICRON and the baseline models.
