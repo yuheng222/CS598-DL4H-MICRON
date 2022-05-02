@@ -36,23 +36,23 @@ def med_process(med_file):
 
 
 # Medication mapping
-def ndc2atc4(med_pd):
-    with open(ndc_rxnorm_file, 'r') as f:
-        ndc2rxnorm = eval(f.read())
-    med_pd['RXCUI'] = med_pd['NDC'].map(ndc2rxnorm)
+def codeMapping2atc4(med_pd):
+    with open(rxnorm2RXCUI_file, 'r') as f:
+        rxnorm2RXCUI = eval(f.read())
+    med_pd['RXCUI'] = med_pd['NDC'].map(rxnorm2RXCUI)
     med_pd.dropna(inplace=True)
 
-    rxnorm2atc = pd.read_csv(ndc2atc_file)
-    rxnorm2atc = rxnorm2atc.drop(columns=['YEAR', 'MONTH', 'NDC'])
-    rxnorm2atc.drop_duplicates(subset=['RXCUI'], inplace=True)
+    rxnorm2atc4 = pd.read_csv(RXCUI2atc4_file)
+    rxnorm2atc4 = rxnorm2atc4.drop(columns=['YEAR', 'MONTH', 'NDC'])
+    rxnorm2atc4.drop_duplicates(subset=['RXCUI'], inplace=True)
     med_pd.drop(index=med_pd[med_pd['RXCUI'].isin([''])].index, axis=0, inplace=True)
 
     med_pd['RXCUI'] = med_pd['RXCUI'].astype('int64')
     med_pd = med_pd.reset_index(drop=True)
-    med_pd = med_pd.merge(rxnorm2atc, on=['RXCUI'])
+    med_pd = med_pd.merge(rxnorm2atc4, on=['RXCUI'])
     med_pd.drop(columns=['NDC', 'RXCUI'], inplace=True)
-    med_pd = med_pd.rename(columns={'ATC4': 'NDC'})
-    med_pd['NDC'] = med_pd['NDC'].map(lambda x: x[:4])
+    med_pd['ATC4'] = med_pd['ATC4'].map(lambda x: x[:4])
+    med_pd = med_pd.rename(columns={'ATC4': 'ATC3'})
     med_pd = med_pd.drop_duplicates()
     med_pd = med_pd.reset_index(drop=True)
     return med_pd
@@ -68,10 +68,9 @@ def process_visit_lg2(med_pd):
 
 # Most common medications
 def filter_300_most_med(med_pd):
-    med_count = med_pd.groupby(by=['NDC']).size().reset_index().rename(columns={0: 'count'}).sort_values(by=['count'],
-                                                                                                         ascending=False).reset_index(
-        drop=True)
-    med_pd = med_pd[med_pd['NDC'].isin(med_count.loc[:299, 'NDC'])]
+    med_count = med_pd.groupby(by=['ATC3']).size().reset_index().rename(columns={0: 'count'}).sort_values(by=['count'],
+        ascending=False).reset_index(drop=True)
+    med_pd = med_pd[med_pd['ATC3'].isin(med_count.loc[:299, 'ATC3'])]
 
     return med_pd.reset_index(drop=True)
 
@@ -133,15 +132,15 @@ def combine_process(med_pd, diag_pd, pro_pd):
 
     # Flatten and merge
     diag_pd = diag_pd.groupby(by=['SUBJECT_ID', 'HADM_ID'])['ICD9_CODE'].unique().reset_index()
-    med_pd = med_pd.groupby(by=['SUBJECT_ID', 'HADM_ID'])['NDC'].unique().reset_index()
+    med_pd = med_pd.groupby(by=['SUBJECT_ID', 'HADM_ID'])['ATC3'].unique().reset_index()
 
     pro_pd = pro_pd.groupby(by=['SUBJECT_ID', 'HADM_ID'])['ICD9_CODE'].unique().reset_index().rename(
         columns={'ICD9_CODE': 'PRO_CODE'})
-    med_pd['NDC'] = med_pd['NDC'].map(lambda x: list(x))
+    med_pd['ATC3'] = med_pd['ATC3'].map(lambda x: list(x))
     pro_pd['PRO_CODE'] = pro_pd['PRO_CODE'].map(lambda x: list(x))
     data = diag_pd.merge(med_pd, on=['SUBJECT_ID', 'HADM_ID'], how='inner')
     data = data.merge(pro_pd, on=['SUBJECT_ID', 'HADM_ID'], how='inner')
-    data['NDC_Len'] = data['NDC'].map(lambda x: len(x))
+    data['ATC3_num'] = data['ATC3'].map(lambda x: len(x))
 
     return data
 
@@ -151,7 +150,7 @@ def statistics(data):
     print('#clinical events ', len(data))
 
     diag = data['ICD9_CODE'].values
-    med = data['NDC'].values
+    med = data['ATC3'].values
     pro = data['PRO_CODE'].values
 
     unique_diag = set([j for i in diag for j in list(i)])
@@ -172,7 +171,7 @@ def statistics(data):
             visit_cnt += 1
             cnt += 1
             x.extend(list(row['ICD9_CODE']))
-            y.extend(list(row['NDC']))
+            y.extend(list(row['ATC3']))
             z.extend(list(row['PRO_CODE']))
         x, y, z = set(x), set(y), set(z)
         avg_diag += len(x)
@@ -220,10 +219,11 @@ def create_str_token_mapping(df):
 
     for index, row in df.iterrows():
         diag_voc.add_sentence(row['ICD9_CODE'])
-        med_voc.add_sentence(row['NDC'])
+        med_voc.add_sentence(row['ATC3'])
         pro_voc.add_sentence(row['PRO_CODE'])
 
-    dill.dump(obj={'diag_voc': diag_voc, 'med_voc': med_voc, 'pro_voc': pro_voc}, file=open('../data/voc_final.pkl', 'wb'))
+    dill.dump(obj={'diag_voc': diag_voc, 'med_voc': med_voc , 'pro_voc': pro_voc}, file=open(vocabulary_file, 'wb'))
+
     return diag_voc, med_voc, pro_voc
 
 
@@ -238,10 +238,11 @@ def create_patient_record(df, diag_voc, med_voc, pro_voc):
             admission = []
             admission.append([diag_voc.word2idx[i] for i in row['ICD9_CODE']])
             admission.append([pro_voc.word2idx[i] for i in row['PRO_CODE']])
-            admission.append([med_voc.word2idx[i] for i in row['NDC']])
+            admission.append([med_voc.word2idx[i] for i in row['ATC3']])
             patient.append(admission)
         records.append(patient)
-    dill.dump(obj=records, file=open('../data/records_final.pkl', 'wb'))
+    dill.dump(obj=records, file=open(ehr_sequence_file, 'wb'))
+
     return records
 
 
@@ -256,7 +257,7 @@ def get_ddi_matrix(records, med_voc, ddi_file):
     for item in med_unique_word:
         atc3_atc4_dic[item[:4]].add(item)
 
-    with open(cid_atc, 'r') as f:
+    with open(cid2atc6_file, 'r') as f:
         for line in f:
             line_ls = line[:-1].split(',')
             cid = line_ls[0]
@@ -268,8 +269,9 @@ def get_ddi_matrix(records, med_voc, ddi_file):
     # DDI load
     ddi_df = pd.read_csv(ddi_file)
     # Fliter sever side effect
-    ddi_most_pd = ddi_df.groupby(by=['Polypharmacy Side Effect', 'Side Effect Name']).size().reset_index().rename(
-        columns={0: 'count'}).sort_values(by=['count'], ascending=False).reset_index(drop=True)
+    ddi_most_pd = ddi_df.groupby(by=['Polypharmacy Side Effect', 'Side Effect Name']) \
+        .size().reset_index().rename(columns={0: 'count'}).sort_values(by=['count'], ascending=False).reset_index(
+        drop=True)
     ddi_most_pd = ddi_most_pd.iloc[-TOPK:, :]
     fliter_ddi_df = ddi_df.merge(ddi_most_pd[['Side Effect Name']], how='inner', on=['Side Effect Name'])
     ddi_df = fliter_ddi_df[['STITCH 1', 'STITCH 2']].drop_duplicates().reset_index(drop=True)
@@ -285,7 +287,7 @@ def get_ddi_matrix(records, med_voc, ddi_file):
                         continue
                     ehr_adj[med_i, med_j] = 1
                     ehr_adj[med_j, med_i] = 1
-    dill.dump(ehr_adj, open('../data/ehr_adj_final.pkl', 'wb'))
+    dill.dump(ehr_adj, open(ehr_adjacency_file, 'wb'))
 
     # DDI adj
     ddi_adj = np.zeros((med_voc_size, med_voc_size))
@@ -304,7 +306,7 @@ def get_ddi_matrix(records, med_voc, ddi_file):
                         if med_voc.word2idx[i] != med_voc.word2idx[j]:
                             ddi_adj[med_voc.word2idx[i], med_voc.word2idx[j]] = 1
                             ddi_adj[med_voc.word2idx[j], med_voc.word2idx[i]] = 1
-    dill.dump(ddi_adj, open('../data/ddi_A_final.pkl', 'wb'))
+    dill.dump(ddi_adj, open(ddi_adjacency_file, 'wb'))
 
     return ddi_adj
 
@@ -315,48 +317,50 @@ if __name__ == '__main__':
     diag_file = '../data/DIAGNOSES_ICD.csv'
     procedure_file = '../data/PROCEDURES_ICD.csv'
 
-    med_structure_file = '../data/idx2drug.pkl'
-
-    # Drug code mapping files
-    ndc2atc_file = '../data/RXCUI2atc4.csv'
-    cid_atc = '../data/drug-atc.csv'
-    ndc_rxnorm_file = '../data/rxnorm2RXCUI.txt'
-
-    # DDI information
+    # input auxiliary files
+    RXCUI2atc4_file = '../data/RXCUI2atc4.csv'
+    cid2atc6_file = '../data/drug-atc.csv'
+    rxnorm2RXCUI_file = '../data/rxnorm2RXCUI.txt'
     ddi_file = '../data/drug-DDI.csv'
-    cid_atc = '../data/drug-atc.csv'
+    med_structure_file = '../data/atc32SMILES.pkl'
+
+    # output files
+    ddi_adjacency_file = "../data/ddi_A_final.pkl"
+    ehr_adjacency_file = "../data/ehr_adj_final.pkl"
+    ehr_sequence_file = "../data/records_final.pkl"
+    vocabulary_file = "../data/voc_final.pkl"
+    ddi_mask_H_file = "../data/ddi_mask_H.pkl"
 
     # Med preprocessing
     med_pd = med_process(med_file)
     med_pd_lg2 = process_visit_lg2(med_pd).reset_index(drop=True)
-    med_pd = med_pd.merge(med_pd_lg2[['SUBJECT_ID']], on='SUBJECT_ID', how='inner')
+    med_pd = med_pd.merge(med_pd_lg2[['SUBJECT_ID']], on='SUBJECT_ID', how='inner').reset_index(drop=True)
 
-    med_pd = ndc2atc4(med_pd)
-    NDCList = dill.load(open(med_structure_file, 'rb'))
-    med_pd = med_pd[med_pd.NDC.isin(list(NDCList.keys()))]
+    med_pd = codeMapping2atc4(med_pd)
     med_pd = filter_300_most_med(med_pd)
-
-    print('complete medication processing')
+    print('===Completed medication processing===')
 
     # Diagnosis preprocessing
     diag_pd = diag_process(diag_file)
-
-    print('complete diagnosis processing')
+    print('===Completed diagnosis processing===')
 
     # Procedure preprocessing
     pro_pd = procedure_process(procedure_file)
-    pro_pd = filter_1000_most_pro(pro_pd)
-
-    print('complete procedure processing')
+    print('===Completed procedure processing===')
 
     # Combine
     data = combine_process(med_pd, diag_pd, pro_pd)
     statistics(data)
-    data.to_pickle('../data/data_final.pkl')
+    print('===Completed combining===')
 
-    print('complete combining')
-
-    # DDI matrix
+    # Create vocab
     diag_voc, med_voc, pro_voc = create_str_token_mapping(data)
+    print("===Obtained voc===")
+
+    # Create EHR sequence data
     records = create_patient_record(data, diag_voc, med_voc, pro_voc)
+    print("===Obtained EHR sequence data")
+
+    # Create DDI adj matrix
     ddi_adj = get_ddi_matrix(records, med_voc, ddi_file)
+    print("===Obtained DDI adj matrix===")

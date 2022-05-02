@@ -47,7 +47,6 @@ let us know if you are able or not able to run the code.
  ┃ ┣ 📜PROCEDURES_ICD.csv
  ┃ ┣ 📜drug-DDI.csv
  ┃ ┣ 📜drug-atc.csv
- ┃ ┣ 📜idx2drug.pkl
  ┃ ┣ 📜RXCUI2atc4.csv
  ┃ ┗ 📜rxnorm2RXCUI.txt
  ┣ 📂models
@@ -86,7 +85,7 @@ links:
 - MIMIC-III dataset from [PhysioNet](https://physionet.org/content/mimiciii/1.4/) 
 (DIAGNOSES_ICD.csv, PRESCRIPTIONS.csv, PROCEDURES_ICD.csv)
 - Medical code mappings from [GAMENet repository](https://github.com/sjy1203/GAMENet/tree/master/data)
-(drug-atc.csv, ndc2atc_level4.csv, ndc2rxnorm_mapping.txt, idx2drug.pkl)
+(drug-atc.csv, ndc2atc_level4.csv, ndc2rxnorm_mapping.txt)
 - Drug DDI information from [CID](https://drive.google.com/file/d/1mnPc0O0ztz0fkv3HF-dpmBb8PLWsEoDz/view) (drug-DDI.csv)
 
 The NDC-RXCUI-ATC4 mapping file has been renamed from *ndc2atc_level4.csv* to *RXCUI2atc4.csv* and the rxnorm to RXCUI 
@@ -160,8 +159,8 @@ mentioned in the paper.
     <img width="45%" src="https://github.com/yuheng222/CS598-DL4H-MICRON/blob/main/results/images/computational_results.png?raw=true" alt="Computational Results"> 
 </p>
 
-As for computational speed, MICRON managed to achieve a 1.36 times speedup over GAMENet from our experiments as compared
-to the 1.5 times relative speedup mentioned in the paper. 
+As for computational speed, MICRON managed to achieve a 1.36 times speedup over GAMENet during training from our 
+experiments compared to the 1.5 times relative speedup mentioned in the paper. 
 
 ## Citation
 #### Paper
