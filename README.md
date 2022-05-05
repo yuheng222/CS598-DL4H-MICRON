@@ -149,7 +149,7 @@ python micron.py --test
 
 ## Results
 
-![Evaluation Results](https://github.com/yuheng222/CS598-DL4H-MICRON/blob/main/results/images/evaluation_result.png?raw=true)
+![Evaluation Results](https://github.com/yuheng222/CS598-DL4H-MICRON/blob/main/results/images/evaluation_results.png?raw=true)
 
 Our evaluation results are very close to what was presented in the paper. From our experiments, MICRON had a 2.9% 
 relative improvement in F1-score over the best baseline model (GAMENet) as compared to the 3.5% relative improvement 
