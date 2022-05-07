@@ -159,7 +159,7 @@ mentioned in the paper.
     <img width="45%" src="https://github.com/yuheng222/CS598-DL4H-MICRON/blob/main/results/images/computational_results.png?raw=true" alt="Computational Results"> 
 </p>
 
-As for computational speed, MICRON managed to achieve a 1.36 times speedup over GAMENet during training from our 
+As for computational speed, MICRON managed to achieve a 1.4 times speedup over GAMENet during training from our 
 experiments compared to the 1.5 times relative speedup mentioned in the paper. 
 
 ## Citation
